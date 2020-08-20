@@ -775,8 +775,8 @@ class Cmd(cmd.Cmd):
 
         :param settable: Settable object being added
         """
-        if settable.destination is None:
-            settable.destination = self
+        if settable.settable_obj is None:
+            settable.settable_obj = self
         self.settables[settable.name] = settable
 
     def remove_settable(self, name: str) -> None:
@@ -3357,6 +3357,8 @@ class Cmd(cmd.Cmd):
         if args.param:
             try:
                 settable = self.settables[args.param]
+                if settable.settable_obj is None:
+                    settable.settable_obj = self
             except KeyError:
                 self.perror("Parameter '{}' not supported (type 'set' for list of parameters).".format(args.param))
                 return
@@ -4705,7 +4707,7 @@ class Cmd(cmd.Cmd):
         :return:
         """
         # figure out what class the command support function was defined in
-        func_class = get_defining_class(cmd_support_func)
+        func_class = get_defining_class(cmd_support_func)  # type: Optional[Type]
 
         # Was there a defining class identified? If so, is it a sub-class of CommandSet?
         if func_class is not None and issubclass(func_class, CommandSet):

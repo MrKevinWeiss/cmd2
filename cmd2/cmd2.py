@@ -409,6 +409,7 @@ class Cmd(cmd.Cmd):
         # Load modular commands
         self._installed_command_sets = []  # type: List[CommandSet]
         self._cmd_to_command_sets = {}  # type: Dict[str, CommandSet]
+        self._cmdset_settables = {}  # type: Dict[CommandSet, List[Settable]]
         if command_sets:
             for command_set in command_sets:
                 self.register_command_set(command_set)
@@ -769,7 +770,7 @@ class Cmd(cmd.Cmd):
                     action.remove_parser(subcommand_name)
                     break
 
-    def add_settable(self, settable: Settable) -> None:
+    def add_settable(self, settable: Settable, *, cmd_set: Optional[CommandSet]) -> None:
         """
         Convenience method to add a settable parameter to ``self.settables``
 

@@ -1,0 +1,30 @@
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.3.0
+    hooks:
+    # - id: check-json
+    - id: check-yaml
+  - repo: https://github.com/ambv/black
+    rev: 19.10b0
+    hooks:
+    - id: black
+      args: ["-l 127", "--skip-string-normalization"]
+  - repo: https://github.com/pycqa/isort
+    rev: 5.6.4
+    hooks:
+      - id: isort
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.7.3
+    hooks:
+    - id: pyupgrade
+      # args: ["--py36-plus"]
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.4
+    hooks:
+    - id: flake8
+  # - repo: https://github.com/PyCQA/doc8.git
+  #   rev: 0.8.1
+  #   hooks:
+  #   - id: doc8
+  #     args: ["-q"]

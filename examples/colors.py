@@ -34,6 +34,7 @@ from cmd2 import ansi
 
 class CmdLineApp(cmd2.Cmd):
     """Example cmd2 application demonstrating colorized output."""
+
     def __init__(self):
         # Set use_ipython to True to enable the "ipy" command which embeds and interactive IPython shell
         super().__init__(use_ipython=True)
@@ -61,7 +62,7 @@ class CmdLineApp(cmd2.Cmd):
         words = []
         for word in args.words:
             if args.piglatin:
-                word = '%s%say' % (word[1:], word[0])
+                word = '{}{}ay'.format(word[1:], word[0])
             if args.shout:
                 word = word.upper()
             words.append(word)
@@ -98,5 +99,6 @@ class CmdLineApp(cmd2.Cmd):
 
 if __name__ == '__main__':
     import sys
+
     c = CmdLineApp()
     sys.exit(c.cmdloop())

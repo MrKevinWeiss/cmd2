@@ -16,7 +16,7 @@ class UnicodeApp(cmd2.Cmd):
 
     def do_𝛑print(self, _):
         """This command prints 𝛑 to 5 decimal places."""
-        self.poutput("𝛑 = {0:.6}".format(math.pi))
+        self.poutput("𝛑 = {:.6}".format(math.pi))
 
     def do_你好(self, arg):
         """This command says hello in Chinese (Mandarin)."""

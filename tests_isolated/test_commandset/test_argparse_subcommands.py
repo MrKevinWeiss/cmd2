@@ -9,7 +9,8 @@ import argparse
 import pytest
 
 import cmd2
-from .conftest import run_cmd, WithCommandSets
+
+from .conftest import WithCommandSets, run_cmd
 
 
 class SubcommandSet(cmd2.CommandSet):
@@ -65,8 +66,7 @@ class SubcommandSet(cmd2.CommandSet):
 
 @pytest.fixture
 def subcommand_app():
-    app = WithCommandSets(auto_load_commands=False,
-                          command_sets=[SubcommandSet(1)])
+    app = WithCommandSets(auto_load_commands=False, command_sets=[SubcommandSet(1)])
     return app
 
 

@@ -41,7 +41,7 @@ matrix:
 #            - BREW_INSTALL=python3
 
 install:
-  - if [[ $TRAVIS_PYTHON_VERSION == 3.5.2 ]]; then pip install flake8 nox==2019.11.9; else pip install flake8 nox; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.5.2 ]]; then pip install nox==2019.11.9 pre-commit; else pip install nox pre-commit; fi
 #  - |
 #    if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 #      if [[ -n "$BREW_INSTALL" ]]; then
@@ -53,8 +53,9 @@ install:
 before_script:
   # stop the build if there are Python syntax errors or undefined names
   # exit-zero treats all errors as warnings.  The GitHub editor is 127 chars wide
+  # Reads from setup.cfg for configuration options.
   if [[ $NOXSESSION == tests-3.8 ]]; then
-    flake8 . --count --ignore=E252,W503 --max-complexity=26 --max-line-length=127 --show-source --statistics ;
+    pre-commit run -a;
   fi
 
 script:

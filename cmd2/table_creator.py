@@ -41,6 +41,7 @@ SPACE = ' '
 
 class HorizontalAlignment(Enum):
     """Horizontal alignment of text in a cell"""
+
     LEFT = 1
     CENTER = 2
     RIGHT = 3
@@ -48,6 +49,7 @@ class HorizontalAlignment(Enum):
 
 class VerticalAlignment(Enum):
     """Vertical alignment of text in a cell"""
+
     TOP = 1
     MIDDLE = 2
     BOTTOM = 3
@@ -55,12 +57,18 @@ class VerticalAlignment(Enum):
 
 class Column:
     """Table column configuration"""
-    def __init__(self, header: str, *, width: Optional[int] = None,
-                 header_horiz_align: HorizontalAlignment = HorizontalAlignment.LEFT,
-                 header_vert_align: VerticalAlignment = VerticalAlignment.BOTTOM,
-                 data_horiz_align: HorizontalAlignment = HorizontalAlignment.LEFT,
-                 data_vert_align: VerticalAlignment = VerticalAlignment.TOP,
-                 max_data_lines: Union[int, float] = constants.INFINITY) -> None:
+
+    def __init__(
+        self,
+        header: str,
+        *,
+        width: Optional[int] = None,
+        header_horiz_align: HorizontalAlignment = HorizontalAlignment.LEFT,
+        header_vert_align: VerticalAlignment = VerticalAlignment.BOTTOM,
+        data_horiz_align: HorizontalAlignment = HorizontalAlignment.LEFT,
+        data_vert_align: VerticalAlignment = VerticalAlignment.TOP,
+        max_data_lines: Union[int, float] = constants.INFINITY
+    ) -> None:
         """
         Column initializer
 
@@ -114,6 +122,7 @@ class TableCreator:
     implement a more granular API rather than use TableCreator directly. There are ready-to-use examples of this
     defined after this class.
     """
+
     def __init__(self, cols: Sequence[Column], *, tab_width: int = 4) -> None:
         """
         TableCreator initializer
@@ -201,6 +210,7 @@ class TableCreator:
         :param max_lines: maximum lines to wrap before ending the last line displayed with an ellipsis
         :return: wrapped text
         """
+
         def add_word(word_to_add: str, is_last_word: bool):
             """
             Called from loop to add a word to the wrapped text
@@ -231,10 +241,9 @@ class TableCreator:
                         room_to_add = False
 
                 if room_to_add:
-                    wrapped_word, lines_used, cur_line_width = TableCreator._wrap_long_word(word_to_add,
-                                                                                            max_width,
-                                                                                            max_lines - total_lines + 1,
-                                                                                            is_last_word)
+                    wrapped_word, lines_used, cur_line_width = TableCreator._wrap_long_word(
+                        word_to_add, max_width, max_lines - total_lines + 1, is_last_word
+                    )
                     # Write the word to the buffer
                     wrapped_buf.write(wrapped_word)
                     total_lines += lines_used - 1
@@ -375,8 +384,15 @@ class TableCreator:
         cell_width = max([ansi.style_aware_wcswidth(line) for line in lines])
         return lines, cell_width
 
-    def generate_row(self, *, row_data: Optional[Sequence[Any]] = None, fill_char: str = SPACE,
-                     pre_line: str = EMPTY, inter_cell: str = (2 * SPACE), post_line: str = EMPTY) -> str:
+    def generate_row(
+        self,
+        *,
+        row_data: Optional[Sequence[Any]] = None,
+        fill_char: str = SPACE,
+        pre_line: str = EMPTY,
+        inter_cell: str = (2 * SPACE),
+        post_line: str = EMPTY
+    ) -> str:
         """
         Generate a header or data table row
 
@@ -396,8 +412,10 @@ class TableCreator:
         :raises: ValueError if fill_char, pre_line, inter_cell, or post_line contains an unprintable
                  character like a newline
         """
+
         class Cell:
             """Inner class which represents a table cell"""
+
             def __init__(self) -> None:
                 # Data in this cell split into individual lines
                 self.lines = []
@@ -424,8 +442,7 @@ class TableCreator:
             raise TypeError("Fill character must be exactly one character long")
 
         # Look for unprintable characters
-        validation_dict = {'fill_char': fill_char, 'pre_line': pre_line,
-                           'inter_cell': inter_cell, 'post_line': post_line}
+        validation_dict = {'fill_char': fill_char, 'pre_line': pre_line, 'inter_cell': inter_cell, 'post_line': post_line}
         for key, val in validation_dict.items():
             if ansi.style_aware_wcswidth(val) == -1:
                 raise (ValueError("{} contains an unprintable character".format(key)))
@@ -500,6 +517,7 @@ class SimpleTable(TableCreator):
     Implementation of TableCreator which generates a borderless table with an optional divider row after the header.
     This class can be used to create the whole table at once or one row at a time.
     """
+
     # Spaces between cells
     INTER_CELL = 2 * SPACE
 
@@ -584,8 +602,7 @@ class SimpleTable(TableCreator):
         """
         return self.generate_row(row_data=row_data, inter_cell=self.INTER_CELL)
 
-    def generate_table(self, table_data: Sequence[Sequence[Any]], *,
-                       include_header: bool = True, row_spacing: int = 1) -> str:
+    def generate_table(self, table_data: Sequence[Sequence[Any]], *, include_header: bool = True, row_spacing: int = 1) -> str:
         """
         Generate a table from a data set
 
@@ -623,8 +640,8 @@ class BorderedTable(TableCreator):
     Implementation of TableCreator which generates a table with borders around the table and between rows. Borders
     between columns can also be toggled. This class can be used to create the whole table at once or one row at a time.
     """
-    def __init__(self, cols: Sequence[Column], *, tab_width: int = 4,
-                 column_borders: bool = True, padding: int = 1) -> None:
+
+    def __init__(self, cols: Sequence[Column], *, tab_width: int = 4, column_borders: bool = True, padding: int = 1) -> None:
         """
         BorderedTable initializer
 
@@ -685,8 +702,9 @@ class BorderedTable(TableCreator):
 
         post_line = self.padding * '═' + '╗'
 
-        return self.generate_row(row_data=self.empty_data, fill_char='═', pre_line=pre_line,
-                                 inter_cell=inter_cell, post_line=post_line)
+        return self.generate_row(
+            row_data=self.empty_data, fill_char='═', pre_line=pre_line, inter_cell=inter_cell, post_line=post_line
+        )
 
     def generate_header_bottom_border(self):
         """Generate a border which appears at the bottom of the header"""
@@ -699,8 +717,9 @@ class BorderedTable(TableCreator):
 
         post_line = self.padding * '═' + '╣'
 
-        return self.generate_row(row_data=self.empty_data, fill_char='═', pre_line=pre_line,
-                                 inter_cell=inter_cell, post_line=post_line)
+        return self.generate_row(
+            row_data=self.empty_data, fill_char='═', pre_line=pre_line, inter_cell=inter_cell, post_line=post_line
+        )
 
     def generate_row_bottom_border(self):
         """Generate a border which appears at the bottom of rows"""
@@ -713,8 +732,9 @@ class BorderedTable(TableCreator):
 
         post_line = self.padding * '─' + '╢'
 
-        return self.generate_row(row_data=self.empty_data, fill_char='─', pre_line=pre_line,
-                                 inter_cell=inter_cell, post_line=post_line)
+        return self.generate_row(
+            row_data=self.empty_data, fill_char='─', pre_line=pre_line, inter_cell=inter_cell, post_line=post_line
+        )
 
     def generate_table_bottom_border(self):
         """Generate a border which appears at the bottom of the table"""
@@ -727,8 +747,9 @@ class BorderedTable(TableCreator):
 
         post_line = self.padding * '═' + '╝'
 
-        return self.generate_row(row_data=self.empty_data, fill_char='═', pre_line=pre_line,
-                                 inter_cell=inter_cell, post_line=post_line)
+        return self.generate_row(
+            row_data=self.empty_data, fill_char='═', pre_line=pre_line, inter_cell=inter_cell, post_line=post_line
+        )
 
     def generate_header(self) -> str:
         """Generate table header"""
@@ -807,8 +828,17 @@ class AlternatingTable(BorderedTable):
     Implementation of BorderedTable which uses background colors to distinguish between rows instead of row border lines.
     This class can be used to create the whole table at once or one row at a time.
     """
-    def __init__(self, cols: Sequence[Column], *, tab_width: int = 4, column_borders: bool = True, padding: int = 1,
-                 bg_odd: Optional[ansi.bg] = None, bg_even: Optional[ansi.bg] = ansi.bg.bright_black) -> None:
+
+    def __init__(
+        self,
+        cols: Sequence[Column],
+        *,
+        tab_width: int = 4,
+        column_borders: bool = True,
+        padding: int = 1,
+        bg_odd: Optional[ansi.bg] = None,
+        bg_even: Optional[ansi.bg] = ansi.bg.bright_black
+    ) -> None:
         """
         AlternatingTable initializer
 
@@ -866,8 +896,9 @@ class AlternatingTable(BorderedTable):
         # Apply appropriate background color to data, but don't change the original
         to_display = [self._apply_bg_color(col) for col in row_data]
 
-        row = self.generate_row(row_data=to_display, fill_char=fill_char, pre_line=pre_line,
-                                inter_cell=inter_cell, post_line=post_line)
+        row = self.generate_row(
+            row_data=to_display, fill_char=fill_char, pre_line=pre_line, inter_cell=inter_cell, post_line=post_line
+        )
         self.row_num += 1
         return row
 

@@ -15,6 +15,7 @@ from cmd2.constants import MULTILINE_TERMINATOR
 
 class Pirate(cmd2.Cmd):
     """A piratical example cmd2 application involving looting and drinking."""
+
     def __init__(self):
         """Initialize the base class as well as this one"""
         shortcuts = dict(cmd2.DEFAULT_SHORTCUTS)
@@ -40,7 +41,7 @@ class Pirate(cmd2.Cmd):
     def postcmd(self, stop, line):
         """Runs right before a command is about to return."""
         if self.gold != self.initial_gold:
-            self.poutput('Now we gots {0} doubloons'.format(self.gold))
+            self.poutput('Now we gots {} doubloons'.format(self.gold))
         if self.gold < 0:
             self.poutput("Off to debtorrr's prison.")
             self.exit_code = -1
@@ -60,7 +61,7 @@ class Pirate(cmd2.Cmd):
             self.gold -= int(arg)
         except ValueError:
             if arg:
-                self.poutput('''What's "{0}"?  I'll take rrrum.'''.format(arg))
+                self.poutput('''What's "{}"?  I'll take rrrum.'''.format(arg))
             self.gold -= 1
 
     def do_quit(self, arg):
@@ -83,11 +84,12 @@ class Pirate(cmd2.Cmd):
         chant = ['yo'] + ['ho'] * args.ho
         separator = ', ' if args.commas else ' '
         chant = separator.join(chant)
-        self.poutput('{0} and a bottle of {1}'.format(chant, args.beverage))
+        self.poutput('{} and a bottle of {}'.format(chant, args.beverage))
 
 
 if __name__ == '__main__':
     import sys
+
     # Create an instance of the Pirate derived class and enter the REPL with cmdloop().
     pirate = Pirate()
     sys_exit_code = pirate.cmdloop()

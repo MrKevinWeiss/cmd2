@@ -34,6 +34,7 @@ Usage:  exit [exit_code]
 
 if __name__ == '__main__':
     import sys
+
     app = ReplWithExitCode()
     sys_exit_code = app.cmdloop()
     app.poutput('{!r} exiting with code: {}'.format(sys.argv[0], sys_exit_code))

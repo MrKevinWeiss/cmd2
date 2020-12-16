@@ -7,10 +7,10 @@ from contextlib import redirect_stderr, redirect_stdout
 from typing import List, Optional, Union
 from unittest import mock
 
+from cmd2_ext_test import ExternalTestMixin
 from pytest import fixture
 
 import cmd2
-from cmd2_ext_test import ExternalTestMixin
 from cmd2.utils import StdSim
 
 # Prefer statically linked gnureadline if available (for macOS compatibility due to issues with libedit)
@@ -26,9 +26,9 @@ except ImportError:
         pass
 
 
-def verify_help_text(cmd2_app: cmd2.Cmd,
-                     help_output: Union[str, List[str]],
-                     verbose_strings: Optional[List[str]] = None) -> None:
+def verify_help_text(
+    cmd2_app: cmd2.Cmd, help_output: Union[str, List[str]], verbose_strings: Optional[List[str]] = None
+) -> None:
     """This function verifies that all expected commands are present in the help text.
 
     :param cmd2_app: instance of cmd2.Cmd
@@ -157,12 +157,7 @@ def base_app():
 
 
 # These are odd file names for testing quoting of them
-odd_file_names = [
-    'nothingweird',
-    'has   spaces',
-    '"is_double_quoted"',
-    "'is_single_quoted'"
-]
+odd_file_names = ['nothingweird', 'has   spaces', '"is_double_quoted"', "'is_single_quoted'"]
 
 
 def complete_tester(text: str, line: str, begidx: int, endidx: int, app) -> Optional[str]:
@@ -181,6 +176,7 @@ def complete_tester(text: str, line: str, begidx: int, endidx: int, app) -> Opti
              Matches are stored in app.completion_matches
              These matches also have been sorted by complete()
     """
+
     def get_line():
         return line
 
@@ -199,6 +195,7 @@ def complete_tester(text: str, line: str, begidx: int, endidx: int, app) -> Opti
 
 class WithCommandSets(ExternalTestMixin, cmd2.Cmd):
     """Class for testing custom help_* methods which override docstring help."""
+
     def __init__(self, *args, **kwargs):
         super(WithCommandSets, self).__init__(*args, **kwargs)
 

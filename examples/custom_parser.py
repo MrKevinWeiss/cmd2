@@ -10,6 +10,7 @@ from cmd2 import Cmd2ArgumentParser, ansi, set_default_argument_parser
 # First define the parser
 class CustomParser(Cmd2ArgumentParser):
     """Overrides error class"""
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 

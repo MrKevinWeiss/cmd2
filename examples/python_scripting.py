@@ -118,5 +118,6 @@ class CmdLineApp(cmd2.Cmd):
 
 if __name__ == '__main__':
     import sys
+
     c = CmdLineApp()
     sys.exit(c.cmdloop())

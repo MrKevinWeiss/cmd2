@@ -19,6 +19,4 @@ except importlib_metadata.PackageNotFoundError:  # pragma: no cover
 
 from .cmd2_ext_test import ExternalTestMixin
 
-__all__ = [
-    'ExternalTestMixin'
-]
+__all__ = ['ExternalTestMixin']

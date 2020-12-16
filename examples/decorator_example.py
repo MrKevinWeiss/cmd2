@@ -18,12 +18,14 @@ import cmd2
 
 class CmdLineApp(cmd2.Cmd):
     """ Example cmd2 application. """
+
     def __init__(self, ip_addr=None, port=None, transcript_files=None):
         shortcuts = dict(cmd2.DEFAULT_SHORTCUTS)
         shortcuts.update({'&': 'speak'})
         # Set use_ipython to True to enable the "ipy" command which embeds and interactive IPython shell
-        super().__init__(use_ipython=False, transcript_files=transcript_files, multiline_commands=['orate'],
-                         shortcuts=shortcuts)
+        super().__init__(
+            use_ipython=False, transcript_files=transcript_files, multiline_commands=['orate'], shortcuts=shortcuts
+        )
 
         self.maxrepeats = 3
         # Make maxrepeats settable at runtime
@@ -48,7 +50,7 @@ class CmdLineApp(cmd2.Cmd):
         words = []
         for word in args.words:
             if args.piglatin:
-                word = '%s%say' % (word[1:], word[0])
+                word = '{}{}ay'.format(word[1:], word[0])
             if args.shout:
                 word = word.upper()
             words.append(word)

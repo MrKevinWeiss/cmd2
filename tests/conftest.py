@@ -25,9 +25,9 @@ except ImportError:
         pass
 
 
-def verify_help_text(cmd2_app: cmd2.Cmd,
-                     help_output: Union[str, List[str]],
-                     verbose_strings: Optional[List[str]] = None) -> None:
+def verify_help_text(
+    cmd2_app: cmd2.Cmd, help_output: Union[str, List[str]], verbose_strings: Optional[List[str]] = None
+) -> None:
     """This function verifies that all expected commands are present in the help text.
 
     :param cmd2_app: instance of cmd2.Cmd
@@ -158,12 +158,7 @@ def base_app():
 
 
 # These are odd file names for testing quoting of them
-odd_file_names = [
-    'nothingweird',
-    'has   spaces',
-    '"is_double_quoted"',
-    "'is_single_quoted'"
-]
+odd_file_names = ['nothingweird', 'has   spaces', '"is_double_quoted"', "'is_single_quoted'"]
 
 
 def complete_tester(text: str, line: str, begidx: int, endidx: int, app) -> Optional[str]:
@@ -182,6 +177,7 @@ def complete_tester(text: str, line: str, begidx: int, endidx: int, app) -> Opti
              Matches are stored in app.completion_matches
              These matches also have been sorted by complete()
     """
+
     def get_line():
         return line
 
